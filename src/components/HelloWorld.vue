@@ -25,6 +25,7 @@
 
 <script>
 import keywords from "../assets/keywords.js";
+import infringingwords from "../assets/infringingwords.js";
 import mingganci from "../assets/mingganci.js";
 
 export default {
@@ -32,6 +33,7 @@ export default {
     return {
       text: "",
       keywords,
+      infringingwords,
       mingganci,
       containedKeywords: [],
     };
@@ -50,20 +52,51 @@ export default {
     //   this.containedKeywords = this.checkKeywords(this.text, this.keywords);
     // },
 
-    checkKeywords(text, keywords) {
+
+
+
+//     checkKeywords(text, keywords) {
+//   const containedKeywords = [];
+//   for (const keyword of keywords) {
+//     if (text.toLowerCase().includes(keyword.toLowerCase())) {
+//       containedKeywords.push(keyword);
+//     }
+//   }
+//   if (containedKeywords.length === 0) {
+//     return "无敏感词";
+//   }
+//   return containedKeywords;
+// },
+
+
+// checkKeywords(text, [infringingwords, keywords]) {
+//   const containedKeywords = [];
+//   for (const keyword of [...infringingwords, ...keywords]) {
+//     if (text.toLowerCase().includes(keyword.toLowerCase())) {
+//       containedKeywords.push(keyword);
+//     }
+//   }
+//   if (containedKeywords.length === 0) {
+//     return "无敏感词";
+//   }
+//   return containedKeywords;
+// },
+
+
+
+findKeywords() {
+  const allKeywords = [...this.keywords, ...this.infringingwords];
   const containedKeywords = [];
-  for (const keyword of keywords) {
-    if (text.toLowerCase().includes(keyword.toLowerCase())) {
+  for (const keyword of allKeywords) {
+    if (this.text.toLowerCase().includes(keyword.toLowerCase())) {
       containedKeywords.push(keyword);
     }
   }
   if (containedKeywords.length === 0) {
-    return "无敏感词";
+    this.containedKeywords = "无敏感词";
+  } else {
+    this.containedKeywords = containedKeywords;
   }
-  return containedKeywords;
-},
-findKeywords() {
-  this.containedKeywords = this.checkKeywords(this.text, this.keywords);
 }
 
 
