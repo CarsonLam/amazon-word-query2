@@ -1,24 +1,26 @@
 <template>
   <div>
     <textarea v-model="text" placeholder="Enter text here"></textarea>
-    <button style="height: 54px; width: 88px; margin-bottom: 88px;" @click="findKeywords">Find Keywords</button>
+    <button
+      style="height: 54px; width: 88px; margin-bottom: 88px"
+      @click="findKeywords"
+    >
+      Find Keywords
+    </button>
     <div v-if="containedKeywords.length > 0">
-      <h1 >Contained Keywords:</h1>
-      
-        <!-- <div v-for="keyword in containedKeywords" :key="keyword">
-          {{ keyword }}
-        </div> -->
-
-        <div style="margin-bottom: 54px; color: #f31a1a;">
-          {{ containedKeywords }}
-        </div>
-      
+      <h4>敏感词:</h4>
+      <div style="margin-bottom: 54px; color: #541af3">
+        {{ containedInKeywords }}
+      </div>
+      <h4>侵权词:</h4>
+      <div style="margin-bottom: 54px; color: #f31a1a">
+        {{ containedInInfringingWords }}
+      </div>
     </div>
     <div>
       <div v-for="keyword in mingganci" :key="keyword">
-          {{ keyword }}
-        </div>
-     
+        {{ keyword }}
+      </div>
     </div>
   </div>
 </template>
@@ -36,73 +38,54 @@ export default {
       infringingwords,
       mingganci,
       containedKeywords: [],
+      containedInKeywords: [],
+      containedInInfringingWords: [],
     };
   },
   methods: {
-    // checkKeywords(text, keywords) {
+    // findKeywords() {
+    //   const allKeywords = [...this.keywords, ...this.infringingwords];
     //   const containedKeywords = [];
-    //   for (const keyword of keywords) {
-    //     if (text.toLowerCase().includes(keyword.toLowerCase())) {
+    //   for (const keyword of allKeywords) {
+    //     if (this.text.toLowerCase().includes(keyword.toLowerCase())) {
     //       containedKeywords.push(keyword);
     //     }
     //   }
-    //   return containedKeywords;
+    //   if (containedKeywords.length === 0) {
+    //     this.containedKeywords = "无敏感词";
+    //   } else {
+    //     this.containedKeywords = containedKeywords;
+    //   }
     // },
-    // findKeywords() {
-    //   this.containedKeywords = this.checkKeywords(this.text, this.keywords);
-    // },
 
+    findKeywords() {
+      const allKeywords = [...this.keywords, ...this.infringingwords];
+      const containedKeywords = [];
+      const containedInKeywords = [];
+      const containedInInfringingWords = [];
 
+      for (const keyword of allKeywords) {
+        if (this.text.toLowerCase().includes(keyword.toLowerCase())) {
+          containedKeywords.push(keyword);
+          if (this.keywords.includes(keyword)) {
+            containedInKeywords.push(keyword);
+          } else if (this.infringingwords.includes(keyword)) {
+            containedInInfringingWords.push(keyword);
+          }
+        }
+      }
 
-
-//     checkKeywords(text, keywords) {
-//   const containedKeywords = [];
-//   for (const keyword of keywords) {
-//     if (text.toLowerCase().includes(keyword.toLowerCase())) {
-//       containedKeywords.push(keyword);
-//     }
-//   }
-//   if (containedKeywords.length === 0) {
-//     return "无敏感词";
-//   }
-//   return containedKeywords;
-// },
-
-
-// checkKeywords(text, [infringingwords, keywords]) {
-//   const containedKeywords = [];
-//   for (const keyword of [...infringingwords, ...keywords]) {
-//     if (text.toLowerCase().includes(keyword.toLowerCase())) {
-//       containedKeywords.push(keyword);
-//     }
-//   }
-//   if (containedKeywords.length === 0) {
-//     return "无敏感词";
-//   }
-//   return containedKeywords;
-// },
-
-
-
-findKeywords() {
-  const allKeywords = [...this.keywords, ...this.infringingwords];
-  const containedKeywords = [];
-  for (const keyword of allKeywords) {
-    if (this.text.toLowerCase().includes(keyword.toLowerCase())) {
-      containedKeywords.push(keyword);
-    }
-  }
-  if (containedKeywords.length === 0) {
-    this.containedKeywords = "无敏感词";
-  } else {
-    this.containedKeywords = containedKeywords;
-  }
-}
-
-
-
-
-
+      if (containedKeywords.length === 0) {
+        this.containedKeywords = "无敏感词";
+      } else {
+        this.containedKeywords = containedKeywords;
+        this.containedInKeywords = containedInKeywords;
+        this.containedInInfringingWords = containedInInfringingWords;
+      }
+      console.log(this.containedKeywords);
+      console.log(this.containedInKeywords);
+      console.log(this.containedInInfringingWords);
+    },
   },
 };
 </script>
