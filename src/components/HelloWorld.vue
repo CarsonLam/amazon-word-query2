@@ -1,16 +1,21 @@
 <template>
   <div>
     <textarea v-model="text" placeholder="Enter text here"></textarea>
-    <button style="height: 54px; width: 88px; margin-bottom: 88px" @click="findKeywords">Find Keywords</button>
+    <button class="word_query_button" style="" @click="findKeywords">
+      开始检测
+    </button>
     <div v-html="highlightedText"></div>
 
     <div>
-     
       <h4>侵权词:</h4>
-      <div style="margin-bottom: 54px; color: #f31a1a">{{ containedInInfringingWords }}</div>
+      <div style="margin-bottom: 54px; color: #f31a1a">
+        {{ containedInInfringingWords }}
+      </div>
 
       <h4>敏感词:</h4>
-      <div style="margin-bottom: 54px; color: #541af3">{{ containedInKeywords }}</div>
+      <div style="margin-bottom: 54px; color: #541af3">
+        {{ containedInKeywords }}
+      </div>
     </div>
     <div>
       <!-- <div v-for="keyword in mingganci" :key="keyword">{{ keyword }}</div> -->
@@ -39,13 +44,19 @@ export default {
     highlightedText() {
       let highlighted = this.text;
       for (const keyword of this.containedInKeywords) {
-        highlighted = highlighted.replace(new RegExp(keyword, 'gi'), `<span style="color: #541af3">${keyword}</span>`);
+        highlighted = highlighted.replace(
+          new RegExp(keyword, "gi"),
+          `<span style="color: #541af3">${keyword}</span>`
+        );
       }
       for (const keyword of this.containedInInfringingWords) {
-        highlighted = highlighted.replace(new RegExp(keyword, 'gi'), `<span style="color: #f31a1a">${keyword}</span>`);
+        highlighted = highlighted.replace(
+          new RegExp(keyword, "gi"),
+          `<span style="color: #f31a1a">${keyword}</span>`
+        );
       }
       return highlighted;
-    }
+    },
   },
   methods: {
     findKeywords() {
@@ -82,5 +93,16 @@ textarea {
   width: 100%;
   height: 100px;
   margin-bottom: 10px;
+}
+
+.word_query_button {
+  height: 54px;
+  width: 88px;
+  margin-bottom: 88px;
+  border: 0;
+  font-size: 16px;
+  font-weight: 900;
+  background-color: #0cb397;
+  color: #fff;
 }
 </style>
