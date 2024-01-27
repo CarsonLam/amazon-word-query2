@@ -1,26 +1,19 @@
 <template>
   <div>
     <textarea v-model="text" placeholder="Enter text here"></textarea>
-    <button
-      style="height: 54px; width: 88px; margin-bottom: 88px"
-      @click="findKeywords"
-    >
-      Find Keywords
-    </button>
-    <div v-if="containedKeywords.length > 0">
-      <h4>敏感词:</h4>
-      <div style="margin-bottom: 54px; color: #541af3">
-        {{ containedInKeywords }}
-      </div>
+    <button style="height: 54px; width: 88px; margin-bottom: 88px" @click="findKeywords">Find Keywords</button>
+    <div v-html="highlightedText"></div>
+
+    <div>
+     
       <h4>侵权词:</h4>
-      <div style="margin-bottom: 54px; color: #f31a1a">
-        {{ containedInInfringingWords }}
-      </div>
+      <div style="margin-bottom: 54px; color: #f31a1a">{{ containedInInfringingWords }}</div>
+
+      <h4>敏感词:</h4>
+      <div style="margin-bottom: 54px; color: #541af3">{{ containedInKeywords }}</div>
     </div>
     <div>
-      <div v-for="keyword in mingganci" :key="keyword">
-        {{ keyword }}
-      </div>
+      <!-- <div v-for="keyword in mingganci" :key="keyword">{{ keyword }}</div> -->
     </div>
   </div>
 </template>
@@ -42,22 +35,19 @@ export default {
       containedInInfringingWords: [],
     };
   },
+  computed: {
+    highlightedText() {
+      let highlighted = this.text;
+      for (const keyword of this.containedInKeywords) {
+        highlighted = highlighted.replace(new RegExp(keyword, 'gi'), `<span style="color: #541af3">${keyword}</span>`);
+      }
+      for (const keyword of this.containedInInfringingWords) {
+        highlighted = highlighted.replace(new RegExp(keyword, 'gi'), `<span style="color: #f31a1a">${keyword}</span>`);
+      }
+      return highlighted;
+    }
+  },
   methods: {
-    // findKeywords() {
-    //   const allKeywords = [...this.keywords, ...this.infringingwords];
-    //   const containedKeywords = [];
-    //   for (const keyword of allKeywords) {
-    //     if (this.text.toLowerCase().includes(keyword.toLowerCase())) {
-    //       containedKeywords.push(keyword);
-    //     }
-    //   }
-    //   if (containedKeywords.length === 0) {
-    //     this.containedKeywords = "无敏感词";
-    //   } else {
-    //     this.containedKeywords = containedKeywords;
-    //   }
-    // },
-
     findKeywords() {
       const allKeywords = [...this.keywords, ...this.infringingwords];
       const containedKeywords = [];
@@ -82,9 +72,6 @@ export default {
         this.containedInKeywords = containedInKeywords;
         this.containedInInfringingWords = containedInInfringingWords;
       }
-      console.log(this.containedKeywords);
-      console.log(this.containedInKeywords);
-      console.log(this.containedInInfringingWords);
     },
   },
 };

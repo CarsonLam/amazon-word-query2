@@ -1,7 +1,8 @@
 
 const keyword = [
-    "good",
+    "Taylor",
     "apple",
+    "delightful",
 
 
 
