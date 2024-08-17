@@ -27,6 +27,8 @@
 import keywords from "../assets/keywords.js";
 import infringingwords from "../assets/infringingwords.js";
 import mingganci from "../assets/mingganci.js";
+import mixpanel from "mixpanel-browser";
+
 
 export default {
   data() {
@@ -60,6 +62,8 @@ export default {
   },
   methods: {
     findKeywords() {
+      mixpanel.track("word", { searchInput: this.text });
+
       const allKeywords = [...this.keywords, ...this.infringingwords];
       const containedKeywords = [];
       const containedInKeywords = [];
